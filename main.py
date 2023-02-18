@@ -93,14 +93,20 @@ if session_response.ok:
     # Crea un'etichetta con il token e l'URL della sessione
     token_label = xbmcgui.ControlLabel(550, 200, 600, 50, f"Token: {token}")
 
-    response = requests.post("https://www.foxyhole.io/api/auth/session/userkey", json={"appSecret": session_data['appSecret'], "token": token})
-    xbmc.log(f"userkey: {response}", level=2) 
+
+    button = xbmcgui.ControlButton(550, 300, 600, 50, 'Esegui richiesta')
+    button.onClick(execute_request)
 
     # Aggiunge i controlli alla finestra
     window.addControl(label)
     window.addControl(qr_control)
     window.addControl(lblAppSecret)
     window.addControl(token_label)
+    window.addControl(button)
+
+def execute_request():
+    response = requests.post("https://www.foxyhole.io/api/auth/session/userkey", json={"appSecret": session_data['appSecret'], "token": token})
+    xbmc.log(f"userkey: {response}", level=2)
 
     # Mostra la finestra con l'etichetta e l'immagine del QR code
     window.show()
@@ -108,7 +114,6 @@ if session_response.ok:
 
 else:
     raise Exception("Errore durante la generazione della sessione, codice di stato: {}".format(session_response.status_code))
-
 
 # Chiude il plugin
 xbmcplugin.endOfDirectory(int(sys.argv[1]))
