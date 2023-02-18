@@ -93,6 +93,9 @@ if session_response.ok:
     # Crea un'etichetta con il token e l'URL della sessione
     token_label = xbmcgui.ControlLabel(550, 200, 600, 50, f"Token: {token}")
 
+    response = requests.post("https://www.foxyhole.io/api/auth/session/userkey", json={"appSecret": session_data['appSecret'], "token": token})
+    xbmc.log(f"userkey: {response}", level=2) 
+
     # Aggiunge i controlli alla finestra
     window.addControl(label)
     window.addControl(qr_control)
